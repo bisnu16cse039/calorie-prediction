@@ -1,0 +1,31 @@
+# Paths & I/O
+train_path: data/train.csv    # required: CSV for training
+predict_data_path: data/test.csv  # optional: CSV for prediction
+prediction_output_path: data/predictions.csv  # optional: CSV for predictions
+mlflow_tracking_uri: file:./mlruns     # where MLflow stores runs
+experiment_name: linear                 # MLflow experiment name
+output_dir: models                     # directory to dump final model(s)
+model_path: models/final_model.pkl    # path to save the final model
+# Data & Target
+target: Calories                       # the column to predict
+
+# Reproducibility & CV
+seed: 42                               # global random seed
+cv_folds: 3                            # number of CV folds
+
+# Models to train, in sequence
+models:
+  #- name: linear                       # plain LinearRegression
+  # - name: ridge                        # Ridge Regression
+  # - name: lasso                        # Lasso Regression
+  # - name: rf                           # RandomForestRegressor
+  # - name: gb                           # GradientBoostingRegressor
+
+  # # XGBoost with hyperparameter grid search
+  - name: xgboost
+    param_grid:
+      model__learning_rate: [0.1]
+      model__max_depth:    [8, 9, 10]
+      model__subsample:    [1.0]
+      model__colsample_bytree: [0.6, 0.7, 0.75]
+      model__n_estimators: [250,300, 350]
